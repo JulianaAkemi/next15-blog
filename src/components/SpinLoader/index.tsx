@@ -11,5 +11,3 @@ export function SpinLoader({ containerClasses = "" }: SpinLoaderProps) {
 		</div>
 	);
 }
-
-export default SpinLoader;
