@@ -4,22 +4,39 @@ import { resolve } from "path";
 import { readFile } from "fs/promises";
 
 const ROOT_DIR = process.cwd();
-const JSON_POSTS_FILE_PATH = resolve(ROOT_DIR, "db", "seed", "posts.json"); //OS agnostic
+const JSON_POSTS_FILE_PATH = resolve(
+	ROOT_DIR,
+	"src",
+	"db",
+	"seed",
+	"posts.json"
+); //OS agnostic
+const WAIT_TIME_IN_MS = 3000;
 
 export class JsonPostRepository implements PostRepository {
+	private async simulateWait() {
+		if (WAIT_TIME_IN_MS <= 0) {
+			return;
+		}
+	}
+
 	private async readFromDisk(): Promise<PostModel[]> {
 		const jsonContent = await readFile(JSON_POSTS_FILE_PATH, "utf-8");
 		const parsedJson = JSON.parse(jsonContent);
 		const { posts } = parsedJson;
+
 		return posts;
 	}
 
 	async findAll(): Promise<PostModel[]> {
+		await this.simulateWait();
 		const posts = await this.readFromDisk();
+
 		return posts;
 	}
 
 	async finById(id: string): Promise<PostModel> {
+		await this.simulateWait();
 		const posts = await this.readFromDisk();
 		const post = posts.find((post) => post.id === id);
 
@@ -30,3 +47,4 @@ export class JsonPostRepository implements PostRepository {
 		return post;
 	}
 }
+console.log("JSON_POSTS_FILE_PATH", JSON_POSTS_FILE_PATH);
