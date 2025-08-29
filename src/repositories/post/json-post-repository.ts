@@ -28,14 +28,14 @@ export class JsonPostRepository implements PostRepository {
 		return posts;
 	}
 
-	async findAll(): Promise<PostModel[]> {
+	async findAllPublished(): Promise<PostModel[]> {
 		await this.simulateWait();
 		const posts = await this.readFromDisk();
 
 		return posts;
 	}
 
-	async finById(id: string): Promise<PostModel> {
+	async findById(id: string): Promise<PostModel> {
 		await this.simulateWait();
 		const posts = await this.readFromDisk();
 		const post = posts.find((post) => post.id === id);
