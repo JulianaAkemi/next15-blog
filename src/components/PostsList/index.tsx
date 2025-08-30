@@ -1,13 +1,12 @@
-import { postRepository } from "@/repositories/post";
 import { PostCoverImage } from "../PostCoverImage";
 import { PostSummary } from "../PostSummary";
+import { findAllPublishedPosts } from "@/lib/post/queries";
 
 export async function PostsList() {
-	const posts = await postRepository.findAllPublished();
-
+	const posts = await findAllPublishedPosts();
 	return (
 		<div className="grid grid-cols-1  gap-8 sm:grid-cols-2 lg:grid-cols-3">
-			{posts.map((post) => {
+			{posts.slice(1).map((post) => {
 				const postLink = `/post/${post.slug}`;
 
 				return (
