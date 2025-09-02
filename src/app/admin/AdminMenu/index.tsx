@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/Button";
 import clsx from "clsx";
 import {
 	CircleXIcon,
@@ -45,7 +46,7 @@ export function AdminMenu() {
 
 	return (
 		<nav className={navClasses}>
-			<button
+			<Button
 				onClick={() => setIsOpen((s) => !s)}
 				className={openCloseBtnClasses}
 			>
@@ -62,7 +63,7 @@ export function AdminMenu() {
 						Fechar
 					</>
 				)}
-			</button>
+			</Button>
 
 			<a className={linkClasses} href="/" target="_blank">
 				<HouseIcon />

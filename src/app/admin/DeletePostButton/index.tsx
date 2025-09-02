@@ -1,7 +1,8 @@
 "use client";
 
 import { deletePostAction } from "@/actions/post/delete-post-action";
-import { Dialog } from "@/components/Dialog.index";
+import { Button } from "@/components/Button";
+import { Dialog } from "@/components/Dialog";
 import clsx from "clsx";
 import { Trash2Icon } from "lucide-react";
 import { useState, useTransition } from "react";
@@ -39,7 +40,7 @@ export function DeletePostButton({ id, title }: DeletePostButtonProps) {
 
 	return (
 		<>
-			<button
+			<Button
 				className={clsx(
 					"text-red-500 cursor-pointer transition",
 					"[&_svg]:w-4 [&_svg]:h-4",
@@ -50,9 +51,10 @@ export function DeletePostButton({ id, title }: DeletePostButtonProps) {
 				title={`Apagar post: ${title}`}
 				onClick={handleClick}
 				disabled={isPending}
+				variant="outlined"
 			>
 				<Trash2Icon />
-			</button>
+			</Button>
 
 			{showDialog && (
 				<Dialog

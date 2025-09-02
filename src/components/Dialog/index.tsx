@@ -1,6 +1,7 @@
 "use client";
 
 import clsx from "clsx";
+import { Button } from "../Button";
 
 type DialogProps = {
 	isVisible?: boolean;
@@ -52,7 +53,7 @@ export function Dialog({
 				</h3>
 				<div id="dialog-description">{content}</div>
 				<div className="flex items-center justify-around">
-					<button
+					<Button
 						className={clsx(
 							"bg-slate-200 hover:bg-slate-300 transition text-slate-950",
 							"flex items-center justify-center",
@@ -64,9 +65,9 @@ export function Dialog({
 						disabled={disabled}
 					>
 						Cancelar
-					</button>
+					</Button>
 
-					<button
+					<Button
 						className={clsx(
 							"bg-blue-500 hover:bg-blue-600 transition text-blue-50",
 							"flex items-center justify-center",
@@ -77,7 +78,7 @@ export function Dialog({
 						disabled={disabled}
 					>
 						Ok
-					</button>
+					</Button>
 				</div>
 			</div>
 		</div>
