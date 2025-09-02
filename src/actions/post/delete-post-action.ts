@@ -5,6 +5,7 @@ import { postsTable } from "@/db/drizzle/schemas";
 import { SIMULATE_WAIT_IN_MS } from "@/lib/constants";
 import { postRepository } from "@/repositories/post";
 import { asyncDelay } from "@/utils/async-delay";
+import { eq } from "drizzle-orm";
 import { revalidateTag } from "next/cache";
 
 export async function deletePostAction(id: string) {
