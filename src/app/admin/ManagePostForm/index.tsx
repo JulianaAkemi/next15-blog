@@ -9,19 +9,44 @@ import { ImageUploader } from "../ImageUploader";
 import { makePartialPublicPost, PublicPost } from "@/dto/post/dto";
 import { createPostAction } from "@/actions/post/create-post-action";
 import { toast } from "react-toastify";
+import { updatePostAction } from "@/actions/post/update-post-action";
+import { useRouter, useSearchParams } from "next/navigation";
 
-type ManagePostFormProps = {
-	publicPost?: PublicPost;
+type ManagePostFormUpdateProps = {
+	mode: "update";
+	publicPost: PublicPost;
 };
 
-export function ManagePostForm({ publicPost }: ManagePostFormProps) {
+type ManagePostFormCreateProps = {
+	mode: "create";
+};
+
+type ManagePostFormProps =
+	| ManagePostFormUpdateProps
+	| ManagePostFormCreateProps;
+
+export function ManagePostForm(props: ManagePostFormProps) {
+	const { mode } = props;
+	const searchParams = useSearchParams();
+	const created = searchParams.get("created");
+	const router = useRouter();
+	let publicPost;
+
+	if (mode === "update") {
+		publicPost = props.publicPost;
+	}
+
+	const actionsMap = {
+		update: updatePostAction,
+		create: createPostAction,
+	};
 	const [contentValue, setContentValue] = useState(publicPost?.content || "");
 	const initialState = {
 		formState: makePartialPublicPost(publicPost),
 		errors: [],
 	};
 	const [state, action, isPending] = useActionState(
-		createPostAction,
+		actionsMap[mode],
 		initialState
 	);
 	const { formState } = state;
@@ -32,6 +57,23 @@ export function ManagePostForm({ publicPost }: ManagePostFormProps) {
 			state.errors.forEach((error) => toast.error(error));
 		}
 	}, [state.errors]);
+
+	useEffect(() => {
+		if (state.success) {
+			toast.dismiss();
+			toast.success("Post atualizado com sucesso!");
+		}
+	}, [state.success]);
+
+	useEffect(() => {
+		if (created === "1") {
+			toast.dismiss();
+			toast.success("Post criado com sucesso!");
+			const url = new URL(window.location.href);
+			url.searchParams.delete("created");
+			router.replace(url.toString());
+		}
+	}, [created, router]);
 
 	return (
 		<form action={action} className="mb-16">
@@ -60,6 +102,7 @@ export function ManagePostForm({ publicPost }: ManagePostFormProps) {
 					placeholder="Digite o nome do autor"
 					type="text"
 					defaultValue={formState.author}
+					disabled={isPending}
 				/>
 
 				<InputText
@@ -68,6 +111,7 @@ export function ManagePostForm({ publicPost }: ManagePostFormProps) {
 					placeholder="Digite o título"
 					type="text"
 					defaultValue={formState.title}
+					disabled={isPending}
 				/>
 
 				<InputText
@@ -76,9 +120,10 @@ export function ManagePostForm({ publicPost }: ManagePostFormProps) {
 					placeholder="Digite o resumo"
 					type="text"
 					defaultValue={formState.excerpt}
+					disabled={isPending}
 				/>
 
-				<ImageUploader />
+				<ImageUploader disabled={isPending} />
 
 				<InputText
 					labelText="URL da imagem de capa"
@@ -86,11 +131,12 @@ export function ManagePostForm({ publicPost }: ManagePostFormProps) {
 					placeholder="Digite a url da imagem"
 					type="text"
 					defaultValue={formState.coverImageUrl}
+					disabled={isPending}
 				/>
 
 				<MarkdownEditor
 					labelText="Conteúdo"
-					disabled={false}
+					disabled={isPending}
 					textAreaName="content"
 					value={contentValue}
 					setValue={setContentValue}

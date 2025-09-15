@@ -12,7 +12,7 @@ export default async function AdminPostNewPage() {
 		<>
 			<h1 className="text-xl font-extrabold mb-5">Criar post</h1>
 
-			<ManagePostForm />
+			<ManagePostForm mode="create" />
 		</>
 	);
 }
