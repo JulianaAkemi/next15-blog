@@ -10,6 +10,17 @@ type LoginActionState = {
 };
 
 export async function loginAction(state: LoginActionState, formData: FormData) {
+	//Protect against login availability when not using the blog for long periods
+	const allowLogin = Boolean(Number(process.env.ALLOW_LOGIN));
+
+	if (!allowLogin) {
+		return {
+			username: "",
+			error: "Login not allowed",
+		};
+	}
+
+	//Protect against brute force
 	await asyncDelay(5000);
 
 	if (!(formData instanceof FormData)) {
