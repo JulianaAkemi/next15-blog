@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Servidor
 
-## Getting Started
+Comandos para iniciar o site do zero:
 
-First, run the development server:
+```sh
+# Ter o node instalado
+# Instalar todos os pacotes
+npm i
+# Configure o .env.local, exemplo abaixo
+npm run migrate
+npm run seed # Seed é opcional
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# build do next
+npm run build
+npm start # apenas para teste
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## .env.local-EXAMPLE:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+IMAGE_UPLOAD_DIRECTORY=uploads
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### URL completa do servidor de imagens sem barra final
 
-## Learn More
+IMAGE_SERVER_URL='http://localhost:3000/uploads'
 
-To learn more about Next.js, take a look at the following resources:
+### Chave usada para assinar os tokens JWT
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Use o arquivo src/utils/generate-hashed-password.ts (npx tsx) para gerar uma secret key
+JWT_SECRET_KEY='SUA_SECRET_KEY_AQUI'
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Tempo para o login expirar (use o mesmo valor em seconds e string)
 
-## Deploy on Vercel
+Ex: 3600 -> 1h, 600 -> 10m, 60 -> 1m, 86400 -> 1d
+LOGIN_EXPIRATION_SECONDS=86400
+LOGIN_EXPIRATION_STRING='1d'
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Nome do cookie usado para login
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+LOGIN_COOKIE_NAME='loginSession'
+
+### Nome do seu usuário para logar no site em /admin/login
+
+LOGIN_USER='SEU_USUARIO_AQUI'
+
+### Use o arquivo src/utils/generate-hashed-password.ts (npx tsx) para gerar seu hash de senha
+
+LOGIN_PASS='SEU_HASH_DE_SENHA_AQUI'
+
+### Permite ou não login (0 = Não, 1 = Sim)
+
+ALLOW_LOGIN=1
